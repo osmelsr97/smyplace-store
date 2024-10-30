@@ -2,13 +2,22 @@
 
 import { useContext } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { IoCartOutline, IoSearchOutline } from "react-icons/io5";
+import clsx from "clsx";
 
 import { titleFont } from "@/config/fonts";
 import { UIContext } from "@/store";
 
+const gendersLinks = [
+  { name: "Women", href: "/gender/women" },
+  { name: "Man", href: "/gender/men" },
+  { name: "Kids", href: "/gender/kid" },
+];
+
 export const TopMenu = () => {
   const { openSidebar } = useContext(UIContext);
+  const pathname = usePathname();
 
   return (
     <nav className="flex px-5 justify-between items-center w-full">
@@ -25,26 +34,17 @@ export const TopMenu = () => {
 
       {/* Center Menu */}
       <div className="hidden sm:block">
-        <Link
-          className="mr-2 p-2 rounded-md hover:bg-gray-100"
-          href="/gender/women"
-        >
-          Women
-        </Link>
-
-        <Link
-          className="mr-2 p-2 rounded-md hover:bg-gray-100"
-          href="/gender/men"
-        >
-          Man
-        </Link>
-
-        <Link
-          className="mr-2 p-2 rounded-md hover:bg-gray-100"
-          href="/gender/kid"
-        >
-          Kids
-        </Link>
+        {gendersLinks.map((link) => (
+          <Link
+            key={link.href}
+            className={clsx("mr-2 p-2 rounded-md hover:bg-gray-100", {
+              "font-bold": link.href === pathname,
+            })}
+            href={link.href}
+          >
+            {link.name}
+          </Link>
+        ))}
       </div>
 
       {/* Search, Cart, Menu */}
