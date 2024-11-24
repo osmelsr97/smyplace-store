@@ -1,7 +1,6 @@
-export const revalidate = 120;
-
 import { Pagination, ProductGrid, Title } from "@/components";
 import { getPaginatedProductsWithImages } from "@/actions";
+import { capitalizeFirstLetter } from "@/utils";
 
 interface Props {
   params: Promise<{
@@ -10,6 +9,14 @@ interface Props {
   searchParams: Promise<{
     page: string;
   }>;
+}
+
+export async function generateMetadata({ params }: Props) {
+  const gender = (await params).gender;
+  return {
+    title: capitalizeFirstLetter(gender),
+    description: `The best selected products only for ${gender}.`,
+  };
 }
 
 export default async function GenderPage({ params, searchParams }: Props) {

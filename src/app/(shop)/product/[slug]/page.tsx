@@ -1,4 +1,6 @@
-// export const revalidate = 604800; // 7 days
+export const revalidate = 604800; // 7 days
+
+import type { Metadata, ResolvingMetadata } from "next";
 
 import { notFound } from "next/navigation";
 
@@ -7,6 +9,7 @@ import {
   ProductSlideshow,
   QuantitySelector,
   SizeSelector,
+  StockLabel,
 } from "@/components";
 import { titleFont } from "@/config/fonts";
 import { formatPrice } from "@/utils";
@@ -16,6 +19,23 @@ interface Props {
   params: Promise<{
     slug: string;
   }>;
+}
+
+export async function generateMetadata({ params }: Props) {
+  // parent: ResolvingMeatadata
+  const slug = (await params).slug;
+
+  const product = await getProductBySlug(slug);
+
+  return {
+    title: product?.title ?? "Product not found!",
+    description: product?.description ?? "",
+    openGraph: {
+      title: product?.title ?? "Product not found!",
+      description: product?.description ?? "",
+      images: [`/products/${product?.images[1]}`],
+    },
+  };
 }
 
 export default async function ProductPage({ params }: Props) {
@@ -48,9 +68,12 @@ export default async function ProductPage({ params }: Props) {
 
       {/* Details */}
       <section className="col-span-1 px-5">
+        <StockLabel slug={product.slug} />
+
         <h1 className={`${titleFont.className} antialiased font-bold text-xl`}>
           {product.title}
         </h1>
+
         <p className="text-lg mb-5">{formatPrice(product.price)}</p>
 
         {/* Sizer selector */}

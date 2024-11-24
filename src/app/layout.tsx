@@ -4,7 +4,10 @@ import { inter } from "@/config/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SmyPlace | Store",
+  title: {
+    template: "%s - SmyPlace | Store",
+    default: "Home - SmyPlace | Store",
+  },
   description: "Welcome to your new favorite place. Your space, your style.",
 };
 
