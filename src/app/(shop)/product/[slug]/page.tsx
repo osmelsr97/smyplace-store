@@ -1,7 +1,5 @@
 export const revalidate = 604800; // 7 days
 
-import type { Metadata, ResolvingMetadata } from "next";
-
 import { notFound } from "next/navigation";
 
 import {
@@ -22,7 +20,6 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props) {
-  // parent: ResolvingMeatadata
   const slug = (await params).slug;
 
   const product = await getProductBySlug(slug);
