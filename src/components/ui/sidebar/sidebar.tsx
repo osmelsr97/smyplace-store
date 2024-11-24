@@ -1,6 +1,5 @@
 "use client";
 
-import { useContext } from "react";
 import clsx from "clsx";
 
 import {
@@ -14,7 +13,8 @@ import {
   IoTicketOutline,
 } from "react-icons/io5";
 
-import { UIContext } from "@/store";
+import { useUIStore } from "@/store";
+
 import { SidebarItem, Props as IMenuOption } from "./sidebarItem";
 
 const clientOptions: IMenuOption[] = [
@@ -31,19 +31,20 @@ const adminOptions: IMenuOption[] = [
 ];
 
 export const Sidebar = () => {
-  const { isSidebarOpen, closeSidebar } = useContext(UIContext);
+  const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen);
+  const closeMenu = useUIStore((state) => state.closeSideMenu);
 
   return (
     <div>
       {/* Background black */}
-      {isSidebarOpen && (
+      {isSideMenuOpen && (
         <div className="fixed inset-0 w-screen h-screen z-10 bg-black opacity-30" />
       )}
 
       {/* Blur */}
-      {isSidebarOpen && (
+      {isSideMenuOpen && (
         <div
-          onClick={closeSidebar}
+          onClick={closeMenu}
           className="fixed fade-in inset-0 w-screen h-screen z-10 backdrop:filter backdrop-blur-sm"
         />
       )}
@@ -52,13 +53,13 @@ export const Sidebar = () => {
       <nav
         className={clsx(
           "fixed z-20 p-2 right-0 top-0 w-64 sm:w-[500px] h-screen bg-white shadow-2xl transform transition-all duration-300",
-          { "translate-x-full": !isSidebarOpen }
+          { "translate-x-full": !isSideMenuOpen }
         )}
       >
         <IoCloseOutline
           size={40}
           className="absolute top-5 right-5 cursor-pointer"
-          onClick={closeSidebar}
+          onClick={closeMenu}
         />
 
         {/* Input */}

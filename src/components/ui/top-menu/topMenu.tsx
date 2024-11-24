@@ -1,13 +1,12 @@
 "use client";
 
-import { useContext } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IoCartOutline, IoSearchOutline } from "react-icons/io5";
 import clsx from "clsx";
 
 import { titleFont } from "@/config/fonts";
-import { UIContext } from "@/store";
+import { useUIStore } from "@/store";
 
 const gendersLinks = [
   { name: "Women", href: "/gender/women" },
@@ -16,7 +15,7 @@ const gendersLinks = [
 ];
 
 export const TopMenu = () => {
-  const { openSidebar } = useContext(UIContext);
+  const openSideMenu = useUIStore((state) => state.openSideMenu);
   const pathname = usePathname();
 
   return (
@@ -63,7 +62,7 @@ export const TopMenu = () => {
         </Link>
 
         <button
-          onClick={openSidebar}
+          onClick={openSideMenu}
           className="m-2 p-2 rounded-md transition-all hover:bg-gray-100"
         >
           Menu

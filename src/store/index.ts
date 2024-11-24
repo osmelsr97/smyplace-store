@@ -1,1 +1,1 @@
-export * from "./ui/ui-context";
+export * from "./ui/ui-store";
