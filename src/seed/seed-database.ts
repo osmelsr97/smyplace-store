@@ -42,7 +42,12 @@ import prisma from "../lib/prisma";
 // }
 
 async function optimizedSeed() {
-  const { products } = initialData;
+  const { products, users } = initialData;
+
+  await prisma.user.createMany({
+    data: users,
+  });
+
   for (const product of products) {
     const { images, type: categoryName, ...restProduct } = product;
 
@@ -67,6 +72,7 @@ async function optimizedSeed() {
 
 async function main() {
   /* Clean all records */
+  await prisma.user.deleteMany();
   await prisma.productImage.deleteMany();
   await prisma.product.deleteMany();
   await prisma.category.deleteMany();
