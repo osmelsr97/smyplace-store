@@ -1,5 +1,7 @@
 "use client";
 
+import { signOut, useSession } from "next-auth/react";
+
 import clsx from "clsx";
 
 import {
@@ -14,17 +16,16 @@ import {
 } from "react-icons/io5";
 
 import { useUIStore } from "@/store";
+// import { logout } from "@/actions";
 
 import { SidebarItem, Props as IMenuOption } from "./sidebarItem";
 
-const clientOptions: IMenuOption[] = [
+const clientOptions: Omit<IMenuOption, "closeMenu">[] = [
   { href: "/profile", name: "Profile", icon: <IoPersonOutline size={30} /> },
   { href: "/orders", name: "Orders", icon: <IoTicketOutline size={30} /> },
-  { href: "/auth/signin", name: "Sign in", icon: <IoLogInOutline size={30} /> },
-  { href: "/auth/logout", name: "Logout", icon: <IoLogOutOutline size={30} /> },
 ];
 
-const adminOptions: IMenuOption[] = [
+const adminOptions: Omit<IMenuOption, "closeMenu">[] = [
   { href: "/profile", name: "Product", icon: <IoShirtOutline size={30} /> },
   { href: "/orders", name: "Orders", icon: <IoTicketOutline size={30} /> },
   { href: "/auth/signin", name: "Users", icon: <IoPeopleOutline size={30} /> },
@@ -33,6 +34,15 @@ const adminOptions: IMenuOption[] = [
 export const Sidebar = () => {
   const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen);
   const closeMenu = useUIStore((state) => state.closeSideMenu);
+
+  const { data: session } = useSession();
+  const isAuthenticated = !!session?.user;
+  const isAdmin = session?.user.role === "admin";
+
+  const handleLogout = () => {
+    closeMenu();
+    signOut();
+  };
 
   return (
     <div>
@@ -75,17 +85,49 @@ export const Sidebar = () => {
         {/* Menu */}
         <section className="h-full overflow-y-auto scroll-auto">
           {/* Client Options */}
-          {clientOptions.map((option) => (
-            <SidebarItem key={option.href} {...option} />
-          ))}
+          {isAuthenticated && (
+            <>
+              {clientOptions.map((option) => (
+                <SidebarItem
+                  key={option.href}
+                  {...option}
+                  closeMenu={closeMenu}
+                />
+              ))}
 
-          {/* Separator */}
-          <div className="w-full h-px bg-gray-200 my-10" />
+              {/* Logout */}
+              <SidebarItem
+                icon={<IoLogOutOutline size={30} />}
+                name="Logout"
+                onClick={handleLogout}
+              />
+            </>
+          )}
+
+          {/* Signin */}
+          {!isAuthenticated && (
+            <SidebarItem
+              icon={<IoLogInOutline size={30} />}
+              name="Sign in"
+              href="/auth/login"
+            />
+          )}
 
           {/* Admin Options */}
-          {adminOptions.map((option) => (
-            <SidebarItem key={option.href} {...option} />
-          ))}
+          {isAdmin && (
+            <>
+              {/* Separator */}
+              <div className="w-full h-px bg-gray-200 my-10" />
+
+              {adminOptions.map((option) => (
+                <SidebarItem
+                  key={option.href ?? option.name}
+                  {...option}
+                  closeMenu={closeMenu}
+                />
+              ))}
+            </>
+          )}
         </section>
       </nav>
     </div>

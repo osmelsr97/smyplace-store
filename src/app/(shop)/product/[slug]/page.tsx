@@ -5,13 +5,13 @@ import { notFound } from "next/navigation";
 import {
   ProductMobileSlideshow,
   ProductSlideshow,
-  QuantitySelector,
-  SizeSelector,
   StockLabel,
 } from "@/components";
 import { titleFont } from "@/config/fonts";
 import { formatPrice } from "@/utils";
 import { getProductBySlug } from "@/actions";
+
+import { AddToCart } from "./ui/AddToCart";
 
 interface Props {
   params: Promise<{
@@ -73,17 +73,7 @@ export default async function ProductPage({ params }: Props) {
 
         <p className="text-lg mb-5">{formatPrice(product.price)}</p>
 
-        {/* Sizer selector */}
-        <SizeSelector
-          selectedSize={product.sizes[0]}
-          availableSizes={product.sizes}
-        />
-
-        {/* Quantity selector */}
-        <QuantitySelector quantity={1} />
-
-        {/* Add Button */}
-        <button className="btn-primary my-5">Add to cart</button>
+        <AddToCart product={product} />
 
         {/* Description */}
         <h3 className="font-bold text-sm">Description</h3>

@@ -8,9 +8,17 @@ export interface Product {
   slug: string;
   tags: string[];
   title: string;
-  // TODO: Fix incompatible type property
-  // type: Type;
   gender: Category;
+}
+
+export interface CartProduct {
+  id: string;
+  slug: string;
+  title: string;
+  price: number;
+  quantity: number;
+  size: Size;
+  image: string;
 }
 
 export type Category = "men" | "women" | "kid" | "unisex";
