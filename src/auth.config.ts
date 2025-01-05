@@ -5,12 +5,42 @@ import { z } from "zod";
 
 import prisma from "@/lib/prisma";
 
+const restrictedRoutes = [
+  { path: "/checkout", role: "user" },
+  { path: "/checkout/address", role: "user" },
+  { path: "/admin", role: "admin" },
+  { path: "/profile", role: "user" },
+  { path: "/orders", role: "user" },
+];
+
 export const authConfig: NextAuthConfig = {
   pages: {
     signIn: "/auth/login",
     newUser: "auth/new-account",
   },
   callbacks: {
+    authorized({ auth, request: { nextUrl } }) {
+      const isLoggedIn = !!auth?.user;
+
+      const isAuthenticatedRoute = restrictedRoutes.find(
+        (route) => route.path === nextUrl.pathname
+      );
+
+      if (isAuthenticatedRoute) {
+        const isAuthorizedUser =
+          auth?.user.role === "admin" ||
+          isAuthenticatedRoute.role === auth?.user.role;
+
+        if (isLoggedIn)
+          return !isAuthorizedUser
+            ? Response.redirect(new URL("/not-found", nextUrl))
+            : true;
+
+        return Response.redirect(new URL("/auth/login", nextUrl));
+      }
+
+      return true;
+    },
     jwt({ token, user }) {
       if (user) {
         token.data = user;
