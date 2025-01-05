@@ -4,6 +4,8 @@ import Link from "next/link";
 
 import clsx from "clsx";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { login, registerUser } from "@/actions";
+import { useState } from "react";
 
 type FormInputs = {
   name: string;
@@ -17,9 +19,22 @@ export const RegisterForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    console.log(data);
+    setErrorMessage("");
+    const { name, email, password } = data;
+    const response = await registerUser(name, email, password);
+
+    console.log(response);
+
+    if (!response.ok) {
+      setErrorMessage(response.message ?? "");
+      return;
+    }
+
+    await login(email.toLowerCase(), password);
+    window.location.replace("/");
   };
 
   return (
@@ -77,6 +92,8 @@ export const RegisterForm = () => {
           </em>
         )}
       </label>
+
+      {errorMessage && <em className="text-red-500 text-xs">{errorMessage}</em>}
 
       <button className="btn-primary">Create</button>
 
