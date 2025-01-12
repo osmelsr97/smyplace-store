@@ -53,6 +53,7 @@ export const getOrderById = async (id: string) => {
       order,
     };
   } catch (error) {
+    console.log(error);
     return {
       ok: false,
       message: "Something was wrong. Please contact support.",

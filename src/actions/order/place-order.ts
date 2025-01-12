@@ -135,10 +135,11 @@ export const placeOrder = async (
       order: prismaTx.order,
       prismaTx,
     };
-  } catch (error: any) {
+  } catch (error) {
+    const err = error as { message: string };
     return {
       ok: false,
-      message: error?.message,
+      message: err?.message,
     };
   }
 };

@@ -42,7 +42,7 @@ export const PlaceOrder = () => {
 
     if (!response.ok) {
       setIsPlacingOrder(false);
-      setOrderErrorMessage(response.message);
+      setOrderErrorMessage(response?.message ?? "");
       return;
     }
 

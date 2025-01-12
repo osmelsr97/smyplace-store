@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import { Title } from "@/components";
-import { formatPrice } from "@/utils";
 import { ProductsInCart } from "./ui/ProductsInCart";
 import { PlaceOrder } from "./ui/PlaceOrder";
 

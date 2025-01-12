@@ -1,18 +1,14 @@
 import Image from "next/image";
+import { redirect } from "next/navigation";
+
 import clsx from "clsx";
 import { IoCardOutline } from "react-icons/io5";
 
-import { Title } from "@/components";
-import { initialData } from "@/seed/seed";
 import { formatPrice } from "@/utils";
-import { getOrderById } from "@/actions";
-import { redirect } from "next/navigation";
 
-const productsInCart = [
-  initialData.products[0],
-  initialData.products[1],
-  initialData.products[2],
-];
+import { getOrderById } from "@/actions";
+
+import { Title } from "@/components";
 
 interface Props {
   params: Promise<{
@@ -23,7 +19,7 @@ interface Props {
 export default async function OrderPage({ params }: Props) {
   const { id } = await params;
 
-  const { ok, order, message } = await getOrderById(id);
+  const { ok, order } = await getOrderById(id);
 
   if (!ok) {
     redirect("/");
