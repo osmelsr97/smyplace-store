@@ -1,46 +1,7 @@
-import { initialData } from "./seed";
 import prisma from "../lib/prisma";
+
+import { initialData } from "./seed";
 import { countries } from "./seed-countries";
-
-// async function seed() {
-//   const { categories, products } = initialData;
-
-//   // Insert all categories
-//   const categoriesData = categories.map((category) => ({ name: category }));
-
-//   const categoriesInDB = await prisma.category.createManyAndReturn({
-//     data: categoriesData,
-//   });
-//   // const categoriesInDB = await prisma.category.findMany();
-
-//   const categoriesMap = categoriesInDB.reduce((categoryMap, newCategory) => {
-//     const { id, name } = newCategory;
-//     categoryMap[name.toLowerCase()] = id;
-//     return categoryMap;
-//   }, {} as Record<string, string>);
-
-//   // Insert products
-//   for (const product of products) {
-//     const { images, type, ...restProduct } = product;
-
-//     const dbProduct = await prisma.product.create({
-//       data: {
-//         ...restProduct,
-//         categoryId: categoriesMap[type] ?? "unisex",
-//       },
-//     });
-
-//     // Insert images from product
-//     const imagesData = images.map((image) => ({
-//       url: image,
-//       productId: dbProduct.id,
-//     }));
-
-//     await prisma.productImage.createMany({
-//       data: imagesData,
-//     });
-//   }
-// }
 
 async function optimizedSeed() {
   const { products, users } = initialData;
@@ -77,15 +38,23 @@ async function optimizedSeed() {
 
 async function main() {
   /* Clean all records */
+
+  // Delete everything related to user order
+  await prisma.orderAddress.deleteMany();
+  await prisma.orderItem.deleteMany();
+  await prisma.order.deleteMany();
+
+  // Delete everything related to the personal information of the user
   await prisma.userAddress.deleteMany();
   await prisma.user.deleteMany();
   await prisma.country.deleteMany();
+
+  // Delete everything related to products
   await prisma.productImage.deleteMany();
   await prisma.product.deleteMany();
   await prisma.category.deleteMany();
 
   /*  Seed DataBase */
-  // await seed();
   await optimizedSeed();
 
   console.log("✅ Seed executed successfully!");

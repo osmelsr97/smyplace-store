@@ -6,6 +6,7 @@ import type { CartProduct } from "@/interfaces/product.interface";
 interface State {
   cart: CartProduct[];
 
+  clearCart: () => void;
   getTotalItems: () => number;
   addProductToCart: (product: CartProduct) => void;
   updateProductQuantity: (product: CartProduct, quantity: number) => void;
@@ -95,6 +96,10 @@ export const useCartStore = create<State>()(
         );
 
         set({ cart: updatedCartProducts });
+      },
+
+      clearCart: () => {
+        set({ cart: [] });
       },
     }),
     {
