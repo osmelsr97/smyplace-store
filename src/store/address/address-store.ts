@@ -11,7 +11,6 @@ interface State {
     lastName: string;
     phone: string;
     postalCode: string;
-    rememberAddress: boolean;
   };
 
   // Methods
@@ -30,7 +29,6 @@ export const useAddressStore = create<State>()(
         postalCode: "",
         phone: "",
         country: "",
-        rememberAddress: false,
       },
 
       setAddress(address) {

@@ -1,16 +1,21 @@
 "use client";
 
+import { useEffect } from "react";
+
+import { useRouter } from "next/navigation";
+
+import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import clsx from "clsx";
 
 import { Country } from "@/interfaces/country.interface";
 
-import { InputText } from "@/components";
 import { useAddressStore } from "@/store";
-import { useEffect } from "react";
 import { deleteUserAddress, setUserAddress } from "@/actions";
-import { useSession } from "next-auth/react";
+
 import { Address } from "@/interfaces";
+
+import { InputText } from "@/components";
 
 type FormInputs = {
   address: string;
@@ -42,6 +47,8 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
     },
   });
 
+  const router = useRouter();
+
   const { data: session } = useSession({
     // If user is not authenticate redirect to login
     required: true,
@@ -58,15 +65,16 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: Props) => {
   }, [address]);
 
   const onSubmit = (data: FormInputs) => {
-    console.log(data);
-    setAddress(data);
     const { rememberAddress, ...restAddress } = data;
+    setAddress(restAddress);
 
     if (rememberAddress) {
       setUserAddress(restAddress, session!.user.id);
     } else {
       deleteUserAddress(session!.user.id);
     }
+
+    router.push("/checkout");
   };
 
   return (

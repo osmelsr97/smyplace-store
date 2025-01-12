@@ -17,7 +17,8 @@ This is an ecommerce project designed to provide a smooth and engaging online sh
 5. Go up the database `docker compose up -d`.
 6. Run [Prisma](https://www.prisma.io/) migrations `npx prisma migrate dev`
 7. Run the database seed `npm run seed`
-8. Run project `npm run dev`.
+8. Clear the localStorage in the browser
+9. Run project `npm run dev`.
 
 ## Build app:
 
