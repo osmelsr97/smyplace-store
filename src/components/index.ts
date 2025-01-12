@@ -5,6 +5,7 @@ export * from "./ui/sidebar/sidebar";
 export * from "./ui/sidebar/sidebar";
 export * from "./ui/footer/Footer";
 export * from "./ui/pagination/Pagination";
+export * from "./ui/form/InputText";
 
 export * from "./product/size-selector/SizeSelector";
 export * from "./product/slide-show/ProductSlideShow";

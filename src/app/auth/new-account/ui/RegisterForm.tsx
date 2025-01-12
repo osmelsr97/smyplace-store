@@ -1,11 +1,14 @@
 "use client";
 
+import { useState } from "react";
+
 import Link from "next/link";
 
-import clsx from "clsx";
 import { SubmitHandler, useForm } from "react-hook-form";
+
 import { login, registerUser } from "@/actions";
-import { useState } from "react";
+
+import { InputText } from "@/components";
 
 type FormInputs = {
   name: string;
@@ -26,8 +29,6 @@ export const RegisterForm = () => {
     const { name, email, password } = data;
     const response = await registerUser(name, email, password);
 
-    console.log(response);
-
     if (!response.ok) {
       setErrorMessage(response.message ?? "");
       return;
@@ -39,59 +40,29 @@ export const RegisterForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
-      <label className="flex flex-col">
-        Full Name
-        <input
-          className={clsx("px-5 py-2 border bg-gray-200 rounded mb-1", {
-            "border-red-500": !!errors.name,
-          })}
-          type="text"
-          autoFocus
-          {...register("name", { required: true })}
-        />
-        {errors.name?.type === "required" && (
-          <em className="text-red-500 text-xs">* Name is required</em>
-        )}
-      </label>
-
-      <label className="flex flex-col">
-        Email
-        <input
-          className={clsx("px-5 py-2 border bg-gray-200 rounded mb-1", {
-            "border-red-500": !!errors.email,
-          })}
-          type="email"
-          {...register("email", {
-            required: true,
-            pattern: /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/,
-          })}
-        />
-        {errors.email?.type === "required" && (
-          <em className="text-red-500 text-xs">* Email is required</em>
-        )}
-        {errors.email?.type === "pattern" && (
-          <em className="text-red-500 text-xs">* Invalid email</em>
-        )}
-      </label>
-
-      <label className="flex flex-col">
-        Password
-        <input
-          className={clsx("px-5 py-2 border bg-gray-200 rounded mb-1", {
-            "border-red-500": !!errors.password,
-          })}
-          type="password"
-          {...register("password", { required: true, minLength: 6 })}
-        />
-        {errors.password?.type === "required" && (
-          <em className="text-red-500 text-xs">* Password is required</em>
-        )}
-        {errors.password?.type === "minLength" && (
-          <em className="text-red-500 text-xs">
-            * Password must contain at least 6 characters
-          </em>
-        )}
-      </label>
+      <InputText
+        {...register("name", { required: true })}
+        label="Full Name"
+        error={errors.name?.type}
+        autoFocus
+      />
+      <InputText
+        {...register("email", {
+          required: true,
+          pattern: /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/,
+        })}
+        label="Email"
+        type="email"
+        error={errors.email?.type}
+        autoFocus
+      />
+      <InputText
+        {...register("password", { required: true, minLength: 6 })}
+        label="Password"
+        type="password"
+        error={errors.password?.type}
+        autoFocus
+      />
 
       {errorMessage && <em className="text-red-500 text-xs">{errorMessage}</em>}
 
