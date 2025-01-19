@@ -49,6 +49,7 @@ export const authConfig: NextAuthConfig = {
       return token;
     },
     session({ session, token }) {
+      // console.log({ token });
       session.user = token.data as typeof session.user;
       return session;
     },

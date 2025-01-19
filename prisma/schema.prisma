@@ -77,6 +77,7 @@ model User {
   password      String
   role          Role      @default(user)
   image         String?
+  sandboxMode   Boolean   @default(false)
 
   // Relations
   address UserAddress?
@@ -128,6 +129,9 @@ model Order {
 
   OrderItem    OrderItem[]
   OrderAddress OrderAddress?
+
+  // Third Party transaction id like stripe, paypal, etc.
+  transactionId String?
 }
 
 model OrderItem {
