@@ -18,6 +18,7 @@ interface SeedUser {
   name: string;
   password: string;
   role: "admin" | "user";
+  sandboxMode: boolean;
 }
 
 type ValidSizes = "XS" | "S" | "M" | "L" | "XL" | "XXL" | "XXXL";
@@ -36,12 +37,14 @@ export const initialData: SeedData = {
       name: "Osmel Smith",
       password: bcryptjs.hashSync("123456"),
       role: "admin",
+      sandboxMode: true,
     },
     {
       email: "samara@smyplace.com",
       name: "Samara Smith",
       password: bcryptjs.hashSync("123456"),
       role: "user",
+      sandboxMode: true,
     },
   ],
   categories: ["Shirts", "Pants", "Hoodies", "Hats"],

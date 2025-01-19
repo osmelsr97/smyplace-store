@@ -1,14 +1,11 @@
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
-import clsx from "clsx";
-import { IoCardOutline } from "react-icons/io5";
-
 import { formatPrice } from "@/utils";
 
 import { getOrderById } from "@/actions";
 
-import { Title } from "@/components";
+import { OrderStatus, PayPalButton, Title } from "@/components";
 
 interface Props {
   params: Promise<{
@@ -35,20 +32,7 @@ export default async function OrderPage({ params }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 ">
           {/* Cart */}
           <div className="flex flex-col mt-5">
-            <div
-              className={clsx(
-                "flex items-center rounded-lg px-2 py-3.5 text-white mb-5",
-                {
-                  "bg-red-500": !order?.isPaid,
-                  "bg-green-700": order?.isPaid,
-                }
-              )}
-            >
-              <IoCardOutline size={30} />
-              <span className="mx-2">
-                {order?.isPaid ? "Paid" : "Pending Payment"}
-              </span>
-            </div>
+            <OrderStatus isPaid={order!.isPaid} />
 
             {/* Items */}
             {order!.OrderItem.map((item) => (
@@ -89,11 +73,8 @@ export default async function OrderPage({ params }: Props) {
               </p>
               <p>{address!.phone}</p>
             </div>
-
             <div className="rounded w-full h-0.5 bg-gray-200 mb-10" />
-
             <h2 className="text-2xl mb-2">Order Summary</h2>
-
             <div className="grid grid-cols-2 mb-5">
               <span>N. Products</span>
               <span className="text-right">
@@ -114,20 +95,11 @@ export default async function OrderPage({ params }: Props) {
               </span>
             </div>
 
-            <div
-              className={clsx(
-                "flex items-center rounded-lg px-2 py-3.5 text-white mb-5",
-                {
-                  "bg-red-500": !order?.isPaid,
-                  "bg-green-700": order?.isPaid,
-                }
-              )}
-            >
-              <IoCardOutline size={30} />
-              <span className="mx-2">
-                {order?.isPaid ? "Paid" : "Pending Payment"}
-              </span>
-            </div>
+            {!order?.isPaid ? (
+              <PayPalButton amount={order!.total} orderId={order!.id} />
+            ) : (
+              <OrderStatus isPaid={true} />
+            )}
           </div>
         </div>
       </div>

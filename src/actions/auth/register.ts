@@ -3,10 +3,13 @@
 import prisma from "@/lib/prisma";
 import bcryptjs from "bcryptjs";
 
+const isSandboxMode = process.env.SANDBOX_MODE === "true";
+
 export const registerUser = async (
   name: string,
   email: string,
-  password: string
+  password: string,
+  sandboxMode = isSandboxMode
 ) => {
   try {
     const user = await prisma.user.create({
@@ -14,11 +17,13 @@ export const registerUser = async (
         name,
         email,
         password: bcryptjs.hashSync(password),
+        sandboxMode,
       },
       select: {
         id: true,
         name: true,
         email: true,
+        sandboxMode: true,
       },
     });
 
