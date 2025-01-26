@@ -5,6 +5,13 @@ const nextConfig: NextConfig = {
   experimental: {
     dynamicIO: false,
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: "res.cloudinary.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

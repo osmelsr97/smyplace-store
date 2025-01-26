@@ -7,10 +7,10 @@ import { IoCardOutline } from "react-icons/io5";
 
 // https://tailwindcomponents.com/component/hoverable-table
 import { Title } from "@/components";
-import { getOrdersByUser } from "@/actions";
+import { getPaginatedOrders } from "@/actions";
 
-export default async function OrdersPage() {
-  const { ok, orders = [] } = await getOrdersByUser();
+export default async function AdminOrdersPage() {
+  const { ok, orders = [] } = await getPaginatedOrders();
 
   if (!ok) {
     redirect("/auth/login");

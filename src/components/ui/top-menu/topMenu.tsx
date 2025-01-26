@@ -10,7 +10,6 @@ import clsx from "clsx";
 
 import { titleFont } from "@/config/fonts";
 import { useCartStore, useUIStore } from "@/store";
-import { useSession } from "next-auth/react";
 
 const gendersLinks = [
   { name: "Women", href: "/gender/women" },
@@ -22,10 +21,6 @@ export const TopMenu = () => {
   const openSideMenu = useUIStore((state) => state.openSideMenu);
   const totalItemsInCart = useCartStore((state) => state.getTotalItems());
   const pathname = usePathname();
-
-  const { data: session } = useSession();
-  const isAuthenticated = !!session?.user;
-  const isSandboxUser = isAuthenticated && session?.user?.sandboxMode;
 
   const [loaded, setLoaded] = useState(false);
 
@@ -44,12 +39,6 @@ export const TopMenu = () => {
 
           <span> | Store</span>
         </Link>
-
-        {isSandboxUser && (
-          <div className="rounded-lg px-2 bg-blue-400">
-            <span className="text-sm text-white">Sandbox Mode</span>
-          </div>
-        )}
       </div>
 
       {/* Center Menu */}

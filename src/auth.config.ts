@@ -8,15 +8,19 @@ import prisma from "@/lib/prisma";
 const restrictedRoutes = [
   { path: "/checkout", role: "user" },
   { path: "/checkout/address", role: "user" },
-  { path: "/admin", role: "admin" },
   { path: "/profile", role: "user" },
   { path: "/orders", role: "user" },
+  { path: "/admin", role: "admin" },
+  { path: "/admin/users", role: "admin" },
+  { path: "/admin/orders", role: "admin" },
+  { path: "/admin/products", role: "admin" },
+  { path: "/admin/product/new", role: "admin" },
 ];
 
 export const authConfig: NextAuthConfig = {
   pages: {
     signIn: "/auth/login",
-    newUser: "auth/new-account",
+    newUser: "/auth/new-account",
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
