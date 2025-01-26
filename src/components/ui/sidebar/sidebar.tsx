@@ -16,19 +16,21 @@ import {
 } from "react-icons/io5";
 
 import { useUIStore } from "@/store";
-// import { logout } from "@/actions";
 
 import { SidebarItem, Props as IMenuOption } from "./sidebarItem";
 
-const clientOptions: Omit<IMenuOption, "closeMenu">[] = [
-  { href: "/profile", name: "Profile", icon: <IoPersonOutline size={30} /> },
-  { href: "/orders", name: "Orders", icon: <IoTicketOutline size={30} /> },
-];
-
 const adminOptions: Omit<IMenuOption, "closeMenu">[] = [
-  { href: "/profile", name: "Product", icon: <IoShirtOutline size={30} /> },
-  { href: "/orders", name: "Orders", icon: <IoTicketOutline size={30} /> },
-  { href: "/auth/signin", name: "Users", icon: <IoPeopleOutline size={30} /> },
+  {
+    href: "/admin/products",
+    name: "Products",
+    icon: <IoShirtOutline size={30} />,
+  },
+  {
+    href: "/admin/orders",
+    name: "Orders",
+    icon: <IoTicketOutline size={30} />,
+  },
+  { href: "/admin/users", name: "Users", icon: <IoPeopleOutline size={30} /> },
 ];
 
 export const Sidebar = () => {
@@ -38,6 +40,21 @@ export const Sidebar = () => {
   const { data: session } = useSession();
   const isAuthenticated = !!session?.user;
   const isAdmin = session?.user.role === "admin";
+  const isSandboxUser = session?.user.sandboxMode;
+
+  const clientOptions: Omit<IMenuOption, "closeMenu">[] = [
+    {
+      href: "/profile",
+      name: "Profile",
+      icon: <IoPersonOutline size={30} />,
+      endElement: isSandboxUser ? (
+        <div className="rounded-lg px-2 bg-blue-400 mt-auto">
+          <span className="text-sm text-white">Sandbox</span>
+        </div>
+      ) : null,
+    },
+    { href: "/orders", name: "Orders", icon: <IoTicketOutline size={30} /> },
+  ];
 
   const handleLogout = () => {
     closeMenu();

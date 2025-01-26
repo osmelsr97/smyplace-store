@@ -6,6 +6,7 @@ export interface Props {
   closeMenu?: () => void;
   onClick?: () => void;
   icon: React.ReactNode;
+  endElement?: React.ReactNode;
 }
 
 export const SidebarItem = ({
@@ -14,6 +15,7 @@ export const SidebarItem = ({
   name,
   closeMenu,
   onClick,
+  endElement,
 }: Props) => {
   if (!href) {
     return (
@@ -23,6 +25,7 @@ export const SidebarItem = ({
       >
         {icon}
         <span className="ml-3 text-xl">{name}</span>
+        {endElement && <div className="ml-auto">{endElement}</div>}
       </button>
     );
   }
@@ -35,6 +38,7 @@ export const SidebarItem = ({
     >
       {icon}
       <span className="ml-3 text-xl">{name}</span>
+      {endElement && <div className="ml-auto">{endElement}</div>}
     </Link>
   );
 };

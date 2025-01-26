@@ -9,6 +9,7 @@ export interface Product {
   tags: string[];
   title: string;
   gender: Category;
+  categoryId?: string;
 }
 
 export interface CartProduct {
@@ -19,6 +20,12 @@ export interface CartProduct {
   quantity: number;
   size: Size;
   image: string;
+}
+
+export interface ProductImage {
+  id: number;
+  url: string;
+  productId?: string;
 }
 
 export type Category = "men" | "women" | "kid" | "unisex";

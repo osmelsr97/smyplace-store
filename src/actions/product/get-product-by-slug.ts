@@ -15,11 +15,9 @@ export const getProductBySlug = async (slug: string) => {
       return null;
     }
 
-    const { ProductImage, ...restProduct } = productBySlug;
-
     return {
-      ...restProduct,
-      images: ProductImage.map((image) => image.url),
+      ...productBySlug,
+      images: productBySlug.ProductImage.map((image) => image.url),
     };
   } catch (error) {
     console.log(error);

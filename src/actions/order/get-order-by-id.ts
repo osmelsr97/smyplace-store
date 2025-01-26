@@ -7,7 +7,10 @@ export const getOrderById = async (id: string) => {
   const session = await auth();
 
   if (!session?.user) {
-    throw "User must be authenticated!";
+    return {
+      ok: false,
+      message: "User must be authenticated!",
+    };
   }
 
   try {
