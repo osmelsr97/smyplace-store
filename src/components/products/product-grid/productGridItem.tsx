@@ -1,8 +1,9 @@
-import Image from "next/image";
-import { Product } from "@/interfaces";
 import Link from "next/link";
-import { formatPrice } from "@/utils";
 
+import { ProductImage } from "@/components";
+import { Product } from "@/interfaces";
+import { formatPrice } from "@/utils";
+import clsx from "clsx";
 interface Props {
   product: Product;
 }
@@ -11,13 +12,19 @@ export const ProductGridItem = ({ product }: Props) => {
   return (
     <div className="rounded-md overflow fade-in group">
       {product.images.map((image, key) => (
-        <Image
+        <ProductImage
           key={image}
-          src={`/products/${image}`}
+          src={image}
           alt={product.title}
-          className={`${
-            key === 1 ? "hidden group-hover:block" : "group-hover:hidden"
-          } w-full object-cover  rounded`}
+          className={clsx(
+            product.images.length > 1
+              ? {
+                  "hidden group-hover:block": key === 1,
+                  "group-hover:hidden": key !== 1,
+                }
+              : {},
+            "w-full object-cover rounded"
+          )}
           width={500}
           height={500}
         />
